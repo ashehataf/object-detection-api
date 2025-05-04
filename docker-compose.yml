@@ -1,0 +1,25 @@
+
+version: '3.8'
+services:
+  triton:
+    image: nvcr.io/nvidia/tritonserver:23.09-py3
+    runtime: nvidia
+    shm_size: 1g
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=0
+    volumes:
+      - ./triton/model_repository:/models
+    command: tritonserver --model-repository=/models
+
+  pytriton-app:
+    build: .
+    depends_on:
+      - triton
+    ports:
+      - "8011:8011"
+    volumes:
+      - .:/app
+    command: ["python", "triton/serve.py"]

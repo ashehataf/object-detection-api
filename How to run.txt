@@ -1,0 +1,7 @@
+1. Build and Run the API:
+ - docker build -t object-detection-api .
+ - docker run -p 8011:8011 object-detection-api
+2. Run Tests
+ - python tests/test_api.py
+3. Run with Triton
+ - docker compose up
